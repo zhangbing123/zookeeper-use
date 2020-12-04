@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <properties>
+        <property name="APP_NAME">zookeeper-use</property>
+        <!-- 文件输出格式 -->
+        <property name="PATTERN">[%d{yyyy-MM-dd HH:mm:ss:SSS z}] [%t] %5p %l: %m%n</property>
+        <Property name="FILE_PATH">/service/logs/app/zookeeper-use
+        </Property>
+    </properties>
+    <appenders>
+        <!--控制台上打印的日志为json格式 -->
+        <Console name="CONSOLE" target="system_out">
+            <PatternLayout pattern="${PATTERN}" />
+        </Console>
+        <!-- error -->
+        <RollingFile name="errorRollingFile" fileName="${FILE_PATH}/error.log"
+                     filePattern="${FILE_PATH}/error-%i.log">
+            <SizeBasedTriggeringPolicy size="500MB" />
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了10 -->
+            <DefaultRolloverStrategy max="10" />
+            <ThresholdFilter level="error" onMatch="ACCEPT"
+                             onMismatch="DENY" />
+            <JsonLayout locationinfo="true" eventEol="true" compact="true"
+                        stacktraceAsString="true" includeStacktrace="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss:SSS}" />
+                <KeyValuePair key="project_name" value="${APP_NAME}" />
+                <KeyValuePair key="traceId" value="$${tracer:traceId:-}"/>
+                <KeyValuePair key="spanId" value="$${tracer:spanId:-}"/>
+                <KeyValuePair key="segmentId" value="$${tracer:segmentId:-}"/>
+            </JsonLayout>
+        </RollingFile>
+        <!-- warn -->
+        <RollingFile name="warnRollingFile" fileName="${FILE_PATH}/warn.log"
+                     filePattern="${FILE_PATH}/warn-%i.log">
+            <SizeBasedTriggeringPolicy size="500MB" />
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了10 -->
+            <DefaultRolloverStrategy max="10" />
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="DENY"
+                                 onMismatch="NEUTRAL" />
+                <ThresholdFilter level="warn" onMatch="ACCEPT"
+                                 onMismatch="DENY" />
+            </Filters>
+            <JsonLayout locationinfo="true" eventEol="true" compact="true"
+                        stacktraceAsString="true" includeStacktrace="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss:SSS}" />
+                <KeyValuePair key="project_name" value="${APP_NAME}" />
+                <KeyValuePair key="traceId" value="$${tracer:traceId:-}"/>
+                <KeyValuePair key="spanId" value="$${tracer:spanId:-}"/>
+                <KeyValuePair key="segmentId" value="$${tracer:segmentId:-}"/>
+            </JsonLayout>
+        </RollingFile>
+        <!-- info -->
+        <RollingFile name="infoRollingFile" fileName="${FILE_PATH}/info.log"
+                     filePattern="${FILE_PATH}/info-%i.log">
+            <SizeBasedTriggeringPolicy size="500MB" />
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了10 -->
+            <DefaultRolloverStrategy max="10" />
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="DENY"
+                                 onMismatch="NEUTRAL" />
+                <ThresholdFilter level="warn" onMatch="DENY"
+                                 onMismatch="NEUTRAL" />
+                <ThresholdFilter level="info" onMatch="ACCEPT"
+                                 onMismatch="DENY" />
+            </Filters>
+            <JsonLayout locationinfo="true" eventEol="true" compact="true"
+                        stacktraceAsString="true" includeStacktrace="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss:SSS}" />
+                <KeyValuePair key="project_name" value="${APP_NAME}" />
+                <KeyValuePair key="traceId" value="$${tracer:traceId:-}"/>
+                <KeyValuePair key="spanId" value="$${tracer:spanId:-}"/>
+                <KeyValuePair key="segmentId" value="$${tracer:segmentId:-}"/>
+            </JsonLayout>
+        </RollingFile>
+        <!-- debug -->
+        <RollingFile name="debugRollingFile" fileName="${FILE_PATH}/debug.log"
+                     filePattern="${FILE_PATH}/debug-%i.log">
+            <SizeBasedTriggeringPolicy size="100KB" />
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了10 -->
+            <DefaultRolloverStrategy max="10" />
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="DENY"
+                                 onMismatch="NEUTRAL" />
+                <ThresholdFilter level="warn" onMatch="DENY"
+                                 onMismatch="NEUTRAL" />
+                <ThresholdFilter level="info" onMatch="DENY"
+                                 onMismatch="NEUTRAL" />
+                <ThresholdFilter level="debug" onMatch="ACCEPT"
+                                 onMismatch="DENY" />
+            </Filters>
+            <JsonLayout locationinfo="true" eventEol="true" compact="true"
+                        stacktraceAsString="true" includeStacktrace="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss:SSS}" />
+                <KeyValuePair key="project_name" value="${APP_NAME}" />
+                <KeyValuePair key="traceId" value="$${tracer:traceId:-}"/>
+                <KeyValuePair key="spanId" value="$${tracer:spanId:-}"/>
+                <KeyValuePair key="segmentId" value="$${tracer:segmentId:-}"/>
+            </JsonLayout>
+        </RollingFile>
+    </appenders>
+    <loggers>
+        <root level="info">
+            <appenderref ref="CONSOLE" />
+            <appenderref ref="errorRollingFile" />
+            <appenderref ref="warnRollingFile" />
+            <appenderref ref="infoRollingFile" />
+            <appenderref ref="debugRollingFile" />
+        </root>
+    </loggers>
+</configuration>
